@@ -1,0 +1,218 @@
+swagger: '2.0'
+info:
+  title: MCRM Loyalty REST Services
+  description: >-
+    MCRM Loyalty Services APIs to fetch/update member details, enroll all
+    cardholders or selected cardholders under a customer, create txn for a
+    member. For more details, please visit
+    [MCRM_LOYALTY_REST_SERVICES](https://confluence.metrosystems.net/display/MYG/LOY-474+%3A+Conversion+of+MCRM+SOAP+services+into+REST+services)
+  version: 1.0.0
+schemes:
+  - https
+host: sandbox-wormhole.mars.mgi.de
+basePath: /mcrm-rest-pp02
+produces:
+  - application/json
+tags:
+  - name: Get Member Details service
+    description: API for Get Member Details service **Version_06**
+  - name: Update Member Details service
+    description: api for Update Member Details service **Version_01**
+securityDefinitions:
+  basicAuth:
+    type: basic
+paths:
+  /02:
+    post:
+      tags:
+        - Get Member Details service
+      summary: >-
+        use this service to fetch member details for countries belonging to E0
+        enterprise
+      description: |-
+        Member details can be fetched by providing information in below format:
+          * Either provide Customer#, CH# and Registered Store# 
+          * or just provide Member#
+          * providing ISO country code is mandatory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/getMemberDetails'
+      responses:
+        '200':
+          description: Request submitted successfully.
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error.
+      security:
+        - basicAuth: []
+  /12:
+    post:
+      tags:
+        - Get Member Details service
+      summary: >-
+        use this service to fetch member details for countries belonging to E1
+        enterprise
+      description: |-
+        Member details can be fetched by providing information in below format:
+          * Either provide Customer#, CH# and Registered Store# 
+          * or just provide Member#
+          * providing ISO country code is mandatory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/getMemberDetails'
+      responses:
+        '200':
+          description: Request submitted successfully.
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error.
+      security:
+        - basicAuth: []
+  '/02#updateMemberDetails_V01':
+    post:
+      tags:
+        - Update Member Details service
+      summary: >-
+        use this service to update member details for countries belonging to E0
+        enterprise
+      description: |-
+        Member details can be fetched by providing information in below format:
+          * Either provide Customer#, CH# and Registered Store# 
+          * or just provide Member#
+          * providing ISO country code is mandatory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/getMemberDetails'
+      responses:
+        '200':
+          description: Request submitted successfully.
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error.
+      security:
+        - basicAuth: []
+  /22:
+    post:
+      tags:
+        - Get Member Details service
+      summary: >-
+        use this service to fetch member details for countries belonging to E2
+        enterprise
+      description: |-
+        Member details can be fetched by providing information in below format:
+          * Either provide Customer#, CH# and Registered Store# 
+          * or just provide Member#
+          * providing ISO country code is mandatory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/getMemberDetails'
+      responses:
+        '200':
+          description: Request submitted successfully.
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error.
+      security:
+        - basicAuth: []
+responses:
+  UnauthorizedError:
+    description: Authentication information is either missing or invalid.
+definitions:
+  getMemberDetails:
+    type: object
+    properties:
+      body:
+        $ref: '#/definitions/body'
+  body:
+    type: object
+    required:
+      - ProcessName
+    properties:
+      ProcessName:
+        type: string
+        example: MG_Rest_Service_getMemberDetails06
+      SiebelMessage:
+        $ref: '#/definitions/SiebelMessage'
+  SiebelMessage:
+    type: object
+    required:
+      - MessageId
+      - MessageType
+      - IntObjectName
+      - IntObjectFormat
+    properties:
+      MessageId:
+        type: string
+        example: ''
+      MessageType:
+        type: string
+        example: Integration Object
+      IntObjectName:
+        type: string
+        example: MG_loyMemberService_getMemberDetails_V06_extIn
+      IntObjectFormat:
+        type: string
+        example: Siebel Hierarchical
+      ListOfMG_loyMemberService_getMemberDetails_V06_extIn:
+        $ref: '#/definitions/ListOfMG_loyMemberService_getMemberDetails_V06_extIn'
+  ListOfMG_loyMemberService_getMemberDetails_V06_extIn:
+    type: object
+    required:
+      - MemberDetail
+    properties:
+      MemberDetail:
+        $ref: '#/definitions/MemberDetail'
+  MemberDetail:
+    type: object
+    required:
+      - MG ISO Country Code
+    properties:
+      MG ISO Country Code:
+        type: string
+        example: '250'
+        description: 3-digit country code
+      MG Customer Number:
+        type: string
+        example: '10820'
+      Cardholder No:
+        type: string
+        example: '1'
+      MG Registration Store Number:
+        type: string
+        description: 5-digit store number
+        example: '00075'
+      Member Number:
+        type: string
+        example: 1-1000067335
